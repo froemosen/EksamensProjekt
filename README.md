@@ -1,3 +1,8 @@
-# EksamensProjekt
+# EksamensProjekt - Discord bot
+I dette projekt vil vi lave en discord bot.
 
-//hej
+__indholdsfortegnelse__
+* Flowcharts
+* UML diagram
+* Tidsplan
+
