@@ -5,4 +5,4 @@ __indholdsfortegnelse__
 * Flowcharts
 * UML diagram
 * Tidsplan
-
+* Discord team (https://discord.com/developers/teams/831059378182291518/information)
