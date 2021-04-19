@@ -36,6 +36,11 @@ class ChildBot():
 
             channelID = self.voiceStatusList[7]
 
+            """ Tried to join a channel, didnt work...
+            voice_client = await self.client.connect(reconnect=True)
+
+            await voice_client.change_voice_state(channelID, self_mute=False, self_deaf=False)"""
+
     
             
 
