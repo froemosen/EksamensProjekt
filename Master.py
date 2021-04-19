@@ -1,4 +1,6 @@
-import discord.py
+import discord
+
+
 
 def read_token():
     with open("token.txt", "t") as f:
