@@ -36,8 +36,7 @@ class ChildBot():
 
             channelID = self.voiceStatusList[7]
 
-            
-            #FIND UD AF message.author.voice variabel definition.
+    
             
 
 
