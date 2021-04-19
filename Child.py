@@ -18,7 +18,24 @@ class ChildBot():
             print(f"{message.author} said '{message.content}'")
             
 
-            print(f"{message.author} is in {message.author.voice}")
+            #print(f"{message.author} is in {message.author.voice}")
+
+            self.voiceStatusRaw = str(message.author.voice)
+
+            print("Raw String Status: "+self.voiceStatusRaw)
+
+            self.voiceStatusList= self.voiceStatusRaw.split(" ")
+
+            print("List String Status:", self.voiceStatusList)
+
+            print("ID: ", self.voiceStatusList[7])
+
+            self.voiceStatusList[7] = self.voiceStatusList[7].replace("id=","")
+
+            print("ID: ", self.voiceStatusList[7])
+
+            channelID = self.voiceStatusList[7]
+
             
             #FIND UD AF message.author.voice variabel definition.
             
