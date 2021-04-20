@@ -1,5 +1,6 @@
 import discord #pip install discord
 import youtube_dl #pip install youtube_dl
+#pip install PyNaCl
 
 
 
@@ -18,6 +19,10 @@ class ChildBot():
             print(f"{message.author} said '{message.content}'")
             
 
+
+            """"
+            TRASH THIS :((
+                
             #print(f"{message.author} is in {message.author.voice}")
 
             self.voiceStatusRaw = str(message.author.voice)
@@ -36,7 +41,18 @@ class ChildBot():
 
             channelID = self.voiceStatusList[7]
 
-            """ Tried to join a channel, didnt work...
+            
+
+            #voiceClient = discord.VoiceClient(self.client, channelID)
+
+            #await voiceClient.connect(reconnect=False, timeout=1000)
+            #await voiceClient.change_voice_state(channelID, self_mute=False, self_deaf=False)
+
+            
+            __________________LINE OF SEPERATION__________________
+            
+            
+            Tried to join a channel, didnt work... (https://discordpy.readthedocs.io/en/latest/api.html#voiceclient)
             voice_client = await self.client.connect(reconnect=True)
 
             await voice_client.change_voice_state(channelID, self_mute=False, self_deaf=False)"""
