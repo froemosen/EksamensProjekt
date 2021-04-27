@@ -9,10 +9,14 @@ class ChildBot():
     def __init__(self, token):
         botIntents = discord.Intents.default()
         botIntents.members = True
-        self.client = commands.Bot(command_prefix="!", intents=botIntents)
-        while True:
-            self.decodeMsg()
-            self.client.run(token)
+        self.client = commands.Bot(command_prefix=("undefined "), intents=botIntents)
+        #while True:
+        self.decodeMsg()
+        self.client.run(token)
+        self.client.command_prefix = "@"+str(self.client.user)+" "
+        print(self.client.command_prefix)
+        print(self.client.user)
+        
 
 
 
@@ -35,7 +39,7 @@ class ChildBot():
                 await ctx.send("I left the voice channel")
             else:
                 await ctx.send("I am not in a voice channel")
-                
+
         """
         @self.client.event
         async def on_message(message):
