@@ -13,7 +13,16 @@ class ChildBot():
         botIntents.members = True
         self.name = name
         self.client = commands.Bot(command_prefix=(name), intents=botIntents)
-        self.players = {}
+        
+        self.ydl_opts = {
+                "format" : "bestaudio/best",
+                "postprocessors" : [{
+                    "key" : "FFmpegExtractAudio",
+                    "preferredcodec" : "mp3",
+                    "preferredquality" : "192",
+                }],
+            }
+        
         #while True:
         self.decodeMsg()
         self.client.run(token)
@@ -24,14 +33,16 @@ class ChildBot():
     def decodeMsg(self):
         print("I Just Went Online")
 
+        #SKAL BRUGES I MASTER BOT KODE!
         @self.client.command(pass_context = True)
         async def join(ctx):
             if (ctx.author.voice):
                 channel = ctx.message.author.voice.channel
-                print(channel)
+                print(type(channel))
                 await channel.connect()
             else:
                 await ctx.send("You are not in a voice channel.")
+        
 
         @self.client.command(pass_context = True)
         async def leave(ctx):
@@ -42,7 +53,13 @@ class ChildBot():
                 await ctx.send("I am not in a voice channel")
 
         @self.client.command(pass_context = True)
-        async def play(ctx, url):
+        async def play(ctx, channel, url):
+            #Connecting to voice channel
+            voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel) #Voice Channel to Object instead of channel name
+            
+            await voiceChannel.connect()
+
+            #Playing a song
             await ctx.send("Downloading media")
             song_there = os.path.isfile(self.name+".mp3")
             try:
@@ -53,16 +70,8 @@ class ChildBot():
             
             self.voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
 
-            ydl_opts = {
-                "format" : "bestaudio/best",
-                "postprocessors" : [{
-                    "key" : "FFmpegExtractAudio",
-                    "preferredcodec" : "mp3",
-                    "preferredquality" : "192",
-                }],
-            }
             print(url)
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
                 ydl.download([url])
             for file in os.listdir("./"):
                 if file.endswith(".mp3"):
