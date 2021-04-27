@@ -42,7 +42,7 @@ class ChildBot():
 
         @self.client.command(pass_context = True)
         async def play(ctx, url):
-            print(url)
+            await ctx.send("")
             song_there = os.path.isfile(self.name+".mp3")
             try:
                 if song_there:
