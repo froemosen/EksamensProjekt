@@ -1,4 +1,5 @@
 import discord #pip install discord
+from discord.ext import commands
 import youtube_dl #pip install youtube_dl
 #pip install PyNaCl
 
@@ -6,21 +7,46 @@ import youtube_dl #pip install youtube_dl
 
 class ChildBot():
     def __init__(self, token):
-        self.client = discord.Client()
-        self.decodeMsg()
-        self.client.run(token)
+        botIntents = discord.Intents.default()
+        botIntents.members = True
+        self.client = commands.Bot(command_prefix="!", intents=botIntents)
+        while True:
+            self.decodeMsg()
+            self.client.run(token)
 
 
 
     def decodeMsg(self):
         print("I Just Went Online")
+
+        @self.client.command(pass_context = True)
+        async def join(ctx):
+            if (ctx.author.voice):
+                channel = ctx.message.author.voice.channel
+                print(channel)
+                await channel.connect()
+            else:
+                await ctx.send("You are not in a voice channel.")
+
+        @self.client.command(pass_context = True)
+        async def leave(ctx):
+            if (ctx.voice_client):
+                await ctx.guild.voice_client.disconnect()
+                await ctx.send("I left the voice channel")
+            else:
+                await ctx.send("I am not in a voice channel")
+                
+        """
         @self.client.event
         async def on_message(message):
             print(f"{message.author} said '{message.content}'")
+            pass
+        """
+        
             
 
 
-            """"
+        """"
             TRASH THIS :((
                 
             #print(f"{message.author} is in {message.author.voice}")
