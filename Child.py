@@ -1,6 +1,7 @@
 import discord #pip install discord
 from discord.ext import commands
 import youtube_dl #pip install youtube_dl
+import os
 #pip install PyNaCl
 
 
@@ -9,7 +10,9 @@ class ChildBot():
     def __init__(self, token, name):
         botIntents = discord.Intents.default()
         botIntents.members = True
+        self.name = name
         self.client = commands.Bot(command_prefix=(name), intents=botIntents)
+        self.players = {}
         #while True:
         self.decodeMsg()
         self.client.run(token)
@@ -37,6 +40,42 @@ class ChildBot():
             else:
                 await ctx.send("I am not in a voice channel")
 
+        @self.client.command(pass_context = True)
+        async def play(ctx, url):
+            print(url)
+            song_there = os.path.isfile(self.name+".mp3")
+            try:
+                if song_there:
+                    os.remove(self.name+".mp3")
+            except PermissionError: #Filen er åben - Musik spiller
+                await ctx.send("Wait for current song to stop playing.")
+            
+            self.voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+
+            ydl_opts = {
+                "format" : "bestaudio/best",
+                "postprocessors" : [{
+                    "key" : "FFmpegExtractAudio",
+                    "preferredcodec" : "mp3",
+                    "preferredquality" : "192",
+                }],
+            }
+            print(url)
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+            for file in os.listdir("./"):
+                if file.endswith(".mp3"):
+                    os.rename(file, self.name+".mp3")
+            self.voice.play(discord.FFmpegPCMAudio(self.name+".mp3"))
+
+        @self.client.command(pass_context = True)
+        async def stop(ctx):
+            try:
+                self.voice.stop()
+            except: 
+                await ctx.send("Not Connected to Voice")
+
+            
         """
         @self.client.event
         async def on_message(message):
