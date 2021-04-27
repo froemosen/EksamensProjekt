@@ -6,16 +6,13 @@ import youtube_dl #pip install youtube_dl
 
 
 class ChildBot():
-    def __init__(self, token):
+    def __init__(self, token, name):
         botIntents = discord.Intents.default()
         botIntents.members = True
-        self.client = commands.Bot(command_prefix=("undefined "), intents=botIntents)
+        self.client = commands.Bot(command_prefix=(name), intents=botIntents)
         #while True:
         self.decodeMsg()
         self.client.run(token)
-        self.client.command_prefix = "@"+str(self.client.user)+" "
-        print(self.client.command_prefix)
-        print(self.client.user)
         
 
 
@@ -92,7 +89,7 @@ class ChildBot():
 
 
 if __name__ == '__main__':
-    bot = ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.Q7BqwyIvUKGOj-7t2V4zzd2Fli0')
+    bot = ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.Q7BqwyIvUKGOj-7t2V4zzd2Fli0', "Node Child (00000) ")
 
     
   
