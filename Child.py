@@ -34,6 +34,7 @@ class ChildBot():
         print("I Just Went Online")
 
         #SKAL BRUGES I MASTER BOT KODE!
+        """
         @self.client.command(pass_context = True)
         async def join(ctx):
             if (ctx.author.voice):
@@ -42,6 +43,7 @@ class ChildBot():
                 await channel.connect()
             else:
                 await ctx.send("You are not in a voice channel.")
+        """
         
 
         @self.client.command(pass_context = True)
