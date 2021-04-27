@@ -3,6 +3,7 @@ from discord.ext import commands
 import youtube_dl #pip install youtube_dl
 import os
 #pip install PyNaCl
+#INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
 
 
 
@@ -42,7 +43,7 @@ class ChildBot():
 
         @self.client.command(pass_context = True)
         async def play(ctx, url):
-            await ctx.send("")
+            await ctx.send("Downloading media")
             song_there = os.path.isfile(self.name+".mp3")
             try:
                 if song_there:
