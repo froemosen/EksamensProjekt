@@ -2,6 +2,8 @@ import discord #pip install discord
 from discord.ext import commands
 import youtube_dl #pip install youtube_dl
 import os
+import time
+from asyncio import sleep
 #pip install PyNaCl
 #INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
 
@@ -13,6 +15,7 @@ class ChildBot():
         botIntents.members = True
         self.name = name
         self.client = commands.Bot(command_prefix=(name), intents=botIntents)
+        self.queue = []
         
         self.ydl_opts = {
                 "format" : "bestaudio/best",
@@ -56,36 +59,78 @@ class ChildBot():
 
         @self.client.command(pass_context = True)
         async def play(ctx, channel, url):
-            #Connecting to voice channel
-            voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel) #Voice Channel to Object instead of channel name
-            
-            await voiceChannel.connect()
-
-            #Playing a song
-            await ctx.send("Downloading media")
-            song_there = os.path.isfile(self.name+".mp3")
+            #Checking if bot i connected to a voice channel
             try:
-                if song_there:
+                #Connecting to voice channel
+                voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel) #Voice Channel to Object instead of channel name
+                await voiceChannel.connect()
+
+            except:
+                print("Already connected to voice")
+                pass
+             
+
+            #Downloading a song
+            await ctx.send("Downloading media...")
+            """
+            newSong = os.path.isfile(ctx+channel+url+".mp3")
+            
+            try:
+                if newSong:
                     os.remove(self.name+".mp3")
             except PermissionError: #Filen er åben - Musik spiller
-                await ctx.send("Wait for current song to stop playing.")
-            
+                await ctx.send("Can't play that song... I don't like it no more!")
+            """
+
             self.voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+        
 
             print(url)
             with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
                 ydl.download([url])
+                
             for file in os.listdir("./"):
                 if file.endswith(".mp3"):
-                    os.rename(file, self.name+".mp3")
-            self.voice.play(discord.FFmpegPCMAudio(self.name+".mp3"))
+                    try:
+                        self.queue.append(file)
+                        os.rename(file, "songs/"+file)
+                        print(self.queue)
+                        await ctx.send(f"Queue is now:\n {self.queue}")
+
+                    except:
+                        print("Song already exists")
+
+            
+            while len(self.queue) > 0:
+                await sleep(2)
+                if self.voice.is_playing() == False:
+                    self.voice.play(discord.FFmpegPCMAudio("songs/"+self.queue[0]))
+                    await ctx.send(f"Now Playing: '{self.queue[0]}'")
+                    try: os.remove("songs/"+self.oldSong)
+                    except: pass
+                    self.oldSong = self.queue[0]
+                    del(self.queue[0])
+                    
+                
+                
+
+            
 
         @self.client.command(pass_context = True)
         async def stop(ctx):
             try:
                 self.voice.stop()
             except: 
-                await ctx.send("Not Connected to Voice")
+                await ctx.send("I'm not playin' anythin', why u trippin'?")
+
+        @self.client.command(pass_context = True)
+        async def resume(ctx):
+            try:
+                self.voice.resume()
+            except:
+                await ctx.send("I'm already playin', chill.")
+
+        
 
             
         """
@@ -95,10 +140,7 @@ class ChildBot():
             pass
         """
         
-            
-
-
-        """"
+        """
             TRASH THIS :((
                 
             #print(f"{message.author} is in {message.author.voice}")
@@ -135,12 +177,13 @@ class ChildBot():
 
             await voice_client.change_voice_state(channelID, self_mute=False, self_deaf=False)"""
 
+
     
             
 
 
 if __name__ == '__main__':
-    bot = ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.Q7BqwyIvUKGOj-7t2V4zzd2Fli0', "Node Child (00000) ")
+    bot = ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000) ")
 
     
   
