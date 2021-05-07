@@ -6,3 +6,4 @@ __indholdsfortegnelse__
 * UML diagram
 * Tidsplan
 * Discord team (https://discord.com/developers/teams/831059378182291518/information)
+* Trello (https://trello.com/b/ZFfdtQ7M/prog-eksamen-discord-bot)
