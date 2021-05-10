@@ -11,11 +11,11 @@ from asyncio import sleep
 
 class ChildBot():
     def __init__(self, token, name):
-        botIntents = discord.Intents.default()
+        botIntents = discord.Intents.all()
         botIntents.members = True
-        self.name = name
-        self.client = commands.Bot(command_prefix=(name), intents=botIntents)
+        self.client = commands.Bot(command_prefix=commands.when_mentioned, intents=botIntents)
         self.queue = []
+        self.name = name
         
         self.ydl_opts = {
                 "format" : "bestaudio/best",
@@ -29,37 +29,18 @@ class ChildBot():
         #while True:
         self.decodeMsg()
         self.client.run(token)
-        
-
-
 
     def decodeMsg(self):
-        print("I Just Went Online")
+        print(f"{self.name}- Just Went Online")
 
-        #SKAL BRUGES I MASTER BOT KODE!
-        """
+        #@self.client.event        
         @self.client.command(pass_context = True)
-        async def join(ctx):
-            if (ctx.author.voice):
-                channel = ctx.message.author.voice.channel
-                print(type(channel))
-                await channel.connect()
-            else:
-                await ctx.send("You are not in a voice channel.")
-        """
-        
-
-        @self.client.command(pass_context = True)
-        async def leave(ctx):
-            if (ctx.voice_client):
-                await ctx.guild.voice_client.disconnect()
-                await ctx.send("I left the voice channel")
-            else:
-                await ctx.send("I am not in a voice channel")
-
-        @self.client.command(pass_context = True)
+        #async def on_message(message):
         async def play(ctx, channel, url):
-            #Checking if bot i connected to a voice channel
+
+            #self.client.event KAN BRUGES VED AT KIGGE PÅ INDHOLDET I BESKEDEN I STEDET FOR COMMANDS HVIS BOT SKAL LÆSES
+
+            #Checking if bot is connected to a voice channel
             try:
                 #Connecting to voice channel
                 voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel) #Voice Channel to Object instead of channel name
@@ -72,15 +53,6 @@ class ChildBot():
 
             #Downloading a song
             await ctx.send("Downloading media...")
-            """
-            newSong = os.path.isfile(ctx+channel+url+".mp3")
-            
-            try:
-                if newSong:
-                    os.remove(self.name+".mp3")
-            except PermissionError: #Filen er åben - Musik spiller
-                await ctx.send("Can't play that song... I don't like it no more!")
-            """
 
             self.voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         
@@ -101,23 +73,24 @@ class ChildBot():
 
             
             while len(self.queue) > 0:
-                await sleep(2)
+                await sleep(3)
                 if self.voice.is_playing() == False:
+                    #Playing new song
                     self.voice.play(discord.FFmpegPCMAudio("songs/"+self.queue[0]))
                     await ctx.send(f"Queue is now:\n {self.queue}")
                     await ctx.send(f"Now Playing: '{self.queue[0]}'")
-                    try: os.remove("songs/"+self.oldSong)
+
+                    #Deleting old files
+                    try: 
+                        if not self.oldSong in self.queue: os.remove("songs/"+self.oldSong) #Delete file, if not still in queue
                     except: pass
                     self.oldSong = self.queue[0]
                     del(self.queue[0])
+
                     
                 
-                
-
-            
-
         @self.client.command(pass_context = True)
-        async def stop(ctx):
+        async def pause(ctx):
             try:
                 self.voice.stop()
             except: 
@@ -130,62 +103,23 @@ class ChildBot():
             except:
                 await ctx.send("I'm already playin', chill.")
 
-        
+        @self.client.command(pass_context = True)
+        async def leave(ctx):
+            if (ctx.voice_client):
+                await ctx.guild.voice_client.disconnect()
+                await ctx.send("I left the voice channel")
+            else:
+                await ctx.send("I am not in a voice channel")
 
-            
-        """
-        @self.client.event
-        async def on_message(message):
-            print(f"{message.author} said '{message.content}'")
-            pass
-        """
-        
-        """
-            TRASH THIS :((
-                
-            #print(f"{message.author} is in {message.author.voice}")
-
-            self.voiceStatusRaw = str(message.author.voice)
-
-            print("Raw String Status: "+self.voiceStatusRaw)
-
-            self.voiceStatusList= self.voiceStatusRaw.split(" ")
-
-            print("List String Status:", self.voiceStatusList)
-
-            print("ID: ", self.voiceStatusList[7])
-
-            self.voiceStatusList[7] = self.voiceStatusList[7].replace("id=","")
-
-            print("ID: ", self.voiceStatusList[7])
-
-            channelID = self.voiceStatusList[7]
-
-            
-
-            #voiceClient = discord.VoiceClient(self.client, channelID)
-
-            #await voiceClient.connect(reconnect=False, timeout=1000)
-            #await voiceClient.change_voice_state(channelID, self_mute=False, self_deaf=False)
-
-            
-            __________________LINE OF SEPERATION__________________
-            
-            
-            Tried to join a channel, didnt work... (https://discordpy.readthedocs.io/en/latest/api.html#voiceclient)
-            voice_client = await self.client.connect(reconnect=True)
-
-            await voice_client.change_voice_state(channelID, self_mute=False, self_deaf=False)"""
+           
 
 
+"""
+def start(token, name):
+    ChildBot(token, name)
+    #ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000) ")
+"""
     
-            
-
-
 if __name__ == '__main__':
-    bot = ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000) ")
-
-    
-  
-
+    ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000)#4316 ")
 
