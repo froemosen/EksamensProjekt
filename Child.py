@@ -95,7 +95,6 @@ class ChildBot():
                         self.queue.append(file)
                         os.rename(file, "songs/"+file)
                         print(self.queue)
-                        await ctx.send(f"Queue is now:\n {self.queue}")
 
                     except:
                         print("Song already exists")
@@ -105,6 +104,7 @@ class ChildBot():
                 await sleep(2)
                 if self.voice.is_playing() == False:
                     self.voice.play(discord.FFmpegPCMAudio("songs/"+self.queue[0]))
+                    await ctx.send(f"Queue is now:\n {self.queue}")
                     await ctx.send(f"Now Playing: '{self.queue[0]}'")
                     try: os.remove("songs/"+self.oldSong)
                     except: pass
