@@ -33,9 +33,8 @@ class ChildBot():
     def decodeMsg(self):
         print(f"{self.name}- Just Went Online")
 
-        #@self.client.event        
+            
         @self.client.command(pass_context = True)
-        #async def on_message(message):
         async def play(ctx, channel, url):
 
             #self.client.event KAN BRUGES VED AT KIGGE PÅ INDHOLDET I BESKEDEN I STEDET FOR COMMANDS HVIS BOT SKAL LÆSES
@@ -92,7 +91,8 @@ class ChildBot():
         @self.client.command(pass_context = True)
         async def pause(ctx):
             try:
-                self.voice.stop()
+                self.voice.pause()
+                print("pause command complete")
             except: 
                 await ctx.send("I'm not playin' anythin', why u trippin'?")
 
@@ -100,25 +100,29 @@ class ChildBot():
         async def resume(ctx):
             try:
                 self.voice.resume()
+                print("resume command complete")
             except:
-                await ctx.send("I'm already playin', chill.")
+                if ctx.voice_client:
+                    await ctx.send("I'm already playin', chill.")
+                else: 
+                    await ctx.send("´Not connected to voice. Use !play to make me join your channel :)")
 
         @self.client.command(pass_context = True)
         async def leave(ctx):
             if (ctx.voice_client):
+                for song in self.queue:
+                    os.remove("songs/"+song)
+                self.queue = []
                 await ctx.guild.voice_client.disconnect()
                 await ctx.send("I left the voice channel")
             else:
                 await ctx.send("I am not in a voice channel")
 
            
-
-
-"""
 def start(token, name):
     ChildBot(token, name)
-    #ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000) ")
-"""
+    #ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000)#4316 ")
+
     
 if __name__ == '__main__':
     ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000)#4316 ")
