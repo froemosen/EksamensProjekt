@@ -6,6 +6,7 @@ import time
 from asyncio import sleep
 #pip install PyNaCl
 #INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
+import sys
 
 
 
@@ -119,11 +120,12 @@ class ChildBot():
                 await ctx.send("I am not in a voice channel")
 
            
+"""
 def start(token, name):
     ChildBot(token, name)
     #ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000)#4316 ")
-
+"""
     
 if __name__ == '__main__':
-    ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000)#4316 ")
+    ChildBot(sys.argv[1], (sys.argv[2]))
 
