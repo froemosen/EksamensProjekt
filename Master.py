@@ -6,6 +6,7 @@ import time
 from asyncio import sleep
 #pip install PyNaCl
 #INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
+import subprocess, sys
 from tokens import * #imports tokens for child bots.
 
 
