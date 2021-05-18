@@ -18,6 +18,7 @@ class MasterBot():
         self.queue = []
         
         #while True:
+        self.client.remove_command('help')
         self.decodeMsg()
         self.client.run(token)
 
@@ -81,7 +82,7 @@ class MasterBot():
                 else: botFound = False
                 
             if not botFound:
-                await ctx.send("No bot is available at the moment. :(")
+                await ctx.send("No bot was found in your channel.")
                     
             
 
@@ -106,7 +107,7 @@ class MasterBot():
                 else: botFound = False
                 
             if not botFound:
-                await ctx.send("No bot is available at the moment. :(")
+                await ctx.send("No bot was found in your channel.")
 
         @self.client.command(pass_context = True)
         async def leave(ctx):
@@ -128,12 +129,16 @@ class MasterBot():
                 else: botFound = False
                 
             if not botFound:
-                await ctx.send("No bot is available at the moment. :(")
+                await ctx.send("No bot was found in your channel.")
 
         @self.client.command(pass_context = True)
-        async def prefix(ctx, ):
+        async def prefix(ctx):
             pass
 
+
+        @self.client.command(pass_context = True)
+        async def help(ctx):
+            await ctx.send(f"The following commands can be used: :nerd:\n\n'!play **url**'  -  Guides you how to play a song of your choice\n'!pause'  -  Guides you how to pause the song\n'!resume'  -  Guides you how to resume the paused song\n'!leave'  -  Guides you how to make the Child Bot leave")
 
 if __name__ == '__main__':
     for name in tokens:

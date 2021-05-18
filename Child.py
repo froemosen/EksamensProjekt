@@ -71,9 +71,17 @@ class ChildBot():
                     except:
                         print("Song already exists")
 
-            
+            await ctx.send("Download Complete:100:")
+
             while len(self.queue) > 0:
-                await sleep(3)
+                await sleep(4)
+
+                """
+                if len(voiceChannel.members) <= 1:
+                    await pause(ctx)
+                    await leave(ctx) 
+                """
+
                 if self.voice.is_playing() == False:
                     #Playing new song
                     self.voice.play(discord.FFmpegPCMAudio("songs/"+self.queue[0]))
@@ -111,6 +119,8 @@ class ChildBot():
         @self.client.command(pass_context = True)
         async def leave(ctx):
             if (ctx.voice_client):
+                try: os.remove("songs/"+self.oldSong)
+                except: pass
                 for song in self.queue:
                     os.remove("songs/"+song)
                 self.queue = []
