@@ -36,19 +36,23 @@ class ChildBot():
 
             
         @self.client.command(pass_context = True)
-        async def play(ctx, channel, url):
+        async def play(ctx, channelName, url):
+
+            print(ctx.guild.voice_channels)
 
             #self.client.event KAN BRUGES VED AT KIGGE PÅ INDHOLDET I BESKEDEN I STEDET FOR COMMANDS HVIS BOT SKAL LÆSES
 
             #Checking if bot is connected to a voice channel
-            try:
-                #Connecting to voice channel
-                voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel) #Voice Channel to Object instead of channel name
-                await voiceChannel.connect()
-
+            #try:
+            #Connecting to voice channel
+            voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channelName) #Voice Channel to Object instead of channel name
+            print(voiceChannel)
+            await voiceChannel.connect()
+            """
             except:
                 print("Already connected to voice")
                 pass
+            """
              
 
             #Downloading a song

@@ -30,8 +30,7 @@ class MasterBot():
             #Finding message author voice channel
             if ctx.author.voice:
                 channel = ctx.message.author.voice.channel
-                print(channel)
-                voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel) #Voice Channel to Object instead of channel name
+    
             else:
                 await ctx.send("You are not in a voice channel.")
 
@@ -51,7 +50,7 @@ class MasterBot():
                 for member in members:
                     if member.bot and not member.voice and str(member).startswith("Node Child"):
                         botName = member.id
-                        await ctx.send(f"I found a bot for you! Type the following message in chat:\n\n<@{botName}> play {channel} {url}")
+                        await ctx.send(f"I found a bot for you! Type the following message in chat:\n\n<@{botName}> play {channel.id} {url}")
                         botFound = True
                         break
                     else: botFound = False
