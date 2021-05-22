@@ -50,7 +50,7 @@ class MasterBot():
                 for member in members:
                     if member.bot and not member.voice and str(member).startswith("Node Child"):
                         botName = member.id
-                        await ctx.send(f"I found a bot for you! Type the following message in chat:\n\n<@{botName}> play {channel.id} {url}")
+                        await ctx.send(f"I found a bot for you! Type the following message in chat:\n\n<@{botName}> play {channel} {url}")
                         botFound = True
                         break
                     else: botFound = False
