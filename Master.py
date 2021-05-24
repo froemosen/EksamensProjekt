@@ -6,7 +6,7 @@ import time
 from asyncio import sleep
 #pip install PyNaCl
 #INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
-import subprocess, sys
+import subprocess
 from tokens import * #imports tokens for child bots.
 
 
@@ -143,7 +143,6 @@ if __name__ == '__main__':
     for name in tokens:
         print(f"{name}is starting up")
 
-        #os.system(f"python Child.py {tokens[name]} {name}")
         subprocess.Popen(["python", "Child.py"]+[str(tokens[name]), str(name)])
     
     MasterBot('ODMxMDYzNzY5NzY4OTE5MDkx.YHPycw.hdRrNgb17V_1wHl05pN0XYBhTAM')
