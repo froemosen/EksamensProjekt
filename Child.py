@@ -2,7 +2,6 @@ import discord #pip install discord
 from discord.ext import commands
 import youtube_dl #pip install youtube_dl
 import os
-import time
 from asyncio import sleep
 #pip install PyNaCl
 #INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
@@ -41,27 +40,18 @@ class ChildBot():
             print(ctx.guild.voice_channels)
 
             #self.client.event KAN BRUGES VED AT KIGGE PÅ INDHOLDET I BESKEDEN I STEDET FOR COMMANDS HVIS BOT SKAL LÆSES
-
-            #Checking if bot is connected to a voice channel
-            #try:
-            #Connecting to voice channel
-            voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channelName) #Voice Channel to Object instead of channel name
-            print(voiceChannel)
-            await voiceChannel.connect()
-            """
-            except:
-                print("Already connected to voice")
-                pass
-            """
-             
+            try:
+                #Connecting to voice channel
+                voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channelName) #Voice Channel to Object instead of channel name
+                print(voiceChannel)
+                await voiceChannel.connect()
+            except: pass
 
             #Downloading a song
-            await ctx.send("Downloading media...")
+            await ctx.send("Downloading media...") #Confirmation that download is happening.
 
             self.voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
         
-
-            print(url)
             with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
                 ydl.download([url])
                 
@@ -75,7 +65,7 @@ class ChildBot():
                     except:
                         print("Song already exists")
 
-            await ctx.send("Download Complete:100:")
+            await ctx.send("Download Complete:100:") #Confirmation that download is complete.
 
             while len(self.queue) > 0:
                 await sleep(4)
@@ -134,11 +124,7 @@ class ChildBot():
                 await ctx.send("I am not in a voice channel")
 
            
-"""
-def start(token, name):
-    ChildBot(token, name)
-    #ChildBot('ODMxMDY2MDQ1NTk0MDc1MTQ3.YHP0kQ.cHu5AkEj_a6DqVugQWEeHUI7dkA', "Node Child (00000)#4316 ")
-"""
+
     
 if __name__ == '__main__':
     ChildBot(sys.argv[1], (sys.argv[2]))

@@ -1,9 +1,5 @@
 import discord #pip install discord
 from discord.ext import commands
-import youtube_dl #pip install youtube_dl
-import os
-import time
-from asyncio import sleep
 #pip install PyNaCl
 #INSTALLÉR FRA NETTET, OG SMID DE TRE .EXE fra 'bin' I SAMME MAPPE SOM youtube_dl
 import subprocess
@@ -81,9 +77,7 @@ class MasterBot():
                 else: botFound = False
                 
             if not botFound:
-                await ctx.send("No bot was found in your channel.")
-                    
-            
+                await ctx.send("No bot was found in your channel.") 
 
 
         @self.client.command(pass_context = True)
@@ -131,13 +125,13 @@ class MasterBot():
                 await ctx.send("No bot was found in your channel.")
 
         @self.client.command(pass_context = True)
-        async def prefix(ctx):
+        async def prefix(ctx, newPrefix):
             pass
 
 
         @self.client.command(pass_context = True)
         async def help(ctx):
-            await ctx.send(f"The following commands can be used: :nerd:\n\n'!play **url**'  -  Guides you how to play a song of your choice\n'!pause'  -  Guides you how to pause the song\n'!resume'  -  Guides you how to resume the paused song\n'!leave'  -  Guides you how to make the Child Bot leave")
+            await ctx.send(f"The following commands can be used: :nerd:\n\n'!play **url**'  -  Guides you how to play a song of your choice\n'!pause'  -  Guides you how to pause the song\n'!resume'  -  Guides you how to resume the paused song\n'!leave'  -  Guides you how to make the Child Bot leave\n'!prefix **new_prefix**' - Changes the prefix (Default is '!')")
 
 if __name__ == '__main__':
     for name in tokens:
